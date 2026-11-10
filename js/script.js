@@ -1,4 +1,4 @@
-/* Kalkulator Shisui Uchiha — logika sederhana */
+/* Kalkulator Shisui Uchiha — logika lengkap */
 const display = document.getElementById('display');
 let current = '0';
 let previous = null;
@@ -14,6 +14,12 @@ function render() { display.textContent = format(current); }
 
 function clearAll() { current = '0'; previous = null; op = null; render(); }
 
+function deleteLast() {
+  if (current.length === 1 || current === '-0') current = '0';
+  else current = current.slice(0, -1) || '0';
+  render();
+}
+
 function toggleSign() {
   if (current === '0') return;
   current = current.startsWith('-') ? current.slice(1) : '-' + current;
@@ -25,11 +31,20 @@ function percent() {
   render();
 }
 
+function mapOp(unicodeOp) {
+  if (unicodeOp === '×') return '*';
+  if (unicodeOp === '÷') return '/';
+  if (unicodeOp === '−') return '-';
+  if (unicodeOp === '+') return '+';
+  return unicodeOp;
+}
+
 function compute(a, b, operator) {
-  if (operator === '+') return a + b;
-  if (operator === '-') return a - b;
-  if (operator === '*') return a * b;
-  if (operator === '/') return b === 0 ? NaN : a / b;
+  const op = mapOp(operator);
+  if (op === '+') return a + b;
+  if (op === '-') return a - b;
+  if (op === '*') return a * b;
+  if (op === '/') return b === 0 ? NaN : a / b;
   return b;
 }
 
@@ -72,6 +87,7 @@ function pressKey(key) {
 document.querySelectorAll('.keys button').forEach(btn => {
   btn.addEventListener('click', () => {
     if (btn.dataset.ac) clearAll();
+    else if (btn.dataset.del) deleteLast();
     else if (btn.dataset.sign) toggleSign();
     else if (btn.dataset.percent) percent();
     else if (btn.dataset.eq) pressEqual();
@@ -82,21 +98,17 @@ document.querySelectorAll('.keys button').forEach(btn => {
   });
 });
 
-// Dukungan papan ketik fisik (optional)
+// Dukungan papan ketik fisik
 document.addEventListener('keydown', e => {
   const key = e.key;
   if ((key >= '0' && key <= '9') || key === '.') { pressKey(key); return; }
   if (key === 'Enter' || key === '=') { e.preventDefault(); pressEqual(); return; }
   if (key === 'Escape') { clearAll(); return; }
-  if (key === 'Backspace') {
-    if (current.length === 1 || current === '-0') current = '0';
-    else current = current.slice(0, -1) || '0';
-    render(); return;
-  }
+  if (key === 'Backspace') { deleteLast(); return; }
   if (key === '+') pressOperator('+');
-  else if (key === '-') pressOperator('-');
-  else if (key === '*') pressOperator('*');
-  else if (key === '/') pressOperator('/');
+  else if (key === '-') pressOperator('−');
+  else if (key === '*') pressOperator('×');
+  else if (key === '/') pressOperator('÷');
 });
 
 render();

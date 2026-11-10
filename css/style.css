@@ -136,6 +136,9 @@ button.zero { grid-column: span 2; }
 .ac { color: #ff6b6b; border-color: #4a0000; }
 .ac:active { background: #ff6b6b; color: #000; border-color: #ff6b6b; box-shadow: 0 0 18px #ff6b6b, 0 2px 0 #100000; }
 
+.del { color: #ffb347; border-color: #6b4000; }
+.del:active { background: #ffb347; color: #000; border-color: #ffb347; box-shadow: 0 0 18px #ffb347, 0 2px 0 #100000; }
+
 @keyframes spin { from { transform: translateX(-50%) rotate(0deg); } to { transform: translateX(-50%) rotate(360deg); } }
 @keyframes susanoo { from { transform: translate(-50%, -50%) scale(1); opacity: 0.7; } to { transform: translate(-50%, -50%) scale(1.35); opacity: 1; } }
 
