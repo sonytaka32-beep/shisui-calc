@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background - transparent -->
+  <defs>
+    <!-- Eye gradient -->
+    <radialGradient id="eyeGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a0000"/>
+      <stop offset="40%" stop-color="#0d0000"/>
+      <stop offset="100%" stop-color="#050000"/>
+    </radialGradient>
+    <!-- Pupil gradient -->
+    <radialGradient id="pupilGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#000000"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+    <!-- Tomoe gradient -->
+    <radialGradient id="tomoeGrad" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#2a0000"/>
+      <stop offset="100%" stop-color="#0a0000"/>
+    </radialGradient>
+    <!-- Red border glow -->
+    <filter id="redGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feFlood flood-color="#8b0000" flood-opacity="0.6"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Green glow for pupil -->
+    <filter id="greenGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feFlood flood-color="#00ff88" flood-opacity="0.5"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer eye circle (sclera) -->
+  <circle cx="512" cy="512" r="480" fill="url(#eyeGrad)" stroke="#8b0000" stroke-width="24" filter="url(#redGlow)"/>
+
+  <!-- Pupil (center black circle) -->
+  <circle cx="512" cy="512" r="180" fill="url(#pupilGrad)" filter="url(#greenGlow)"/>
+  <circle cx="512" cy="512" r="172" fill="none" stroke="#8b0000" stroke-width="8"/>
+
+  <!-- ITACHI MANGEKYOU: 3 Tomoe with spiral pattern -->
+  <g transform-origin="512 512">
+    <!-- Tomoe 1 (Top) -->
+    <g class="tomoe" transform="translate(512, 512) rotate(-90) translate(0, -280)">
+      <path d="M0,0 C0,-50 60,-50 80,0 C60,50 0,50 0,0 Z" fill="url(#tomoeGrad)" stroke="#440000" stroke-width="4"/>
+      <!-- Inner comma tail -->
+      <path d="M40,0 C50,-10 70,-10 75,0 C70,10 50,10 40,0 Z" fill="#0a0000"/>
+    </g>
+
+    <!-- Tomoe 2 (Bottom Right) -->
+    <g class="tomoe" transform="translate(512, 512) rotate(30) translate(0, -280)">
+      <path d="M0,0 C0,-50 60,-50 80,0 C60,50 0,50 0,0 Z" fill="url(#tomoeGrad)" stroke="#440000" stroke-width="4"/>
+      <path d="M40,0 C50,-10 70,-10 75,0 C70,10 50,10 40,0 Z" fill="#0a0000"/>
+    </g>
+
+    <!-- Tomoe 3 (Bottom Left) -->
+    <g class="tomoe" transform="translate(512, 512) rotate(-210) translate(0, -280)">
+      <path d="M0,0 C0,-50 60,-50 80,0 C60,50 0,50 0,0 Z" fill="url(#tomoeGrad)" stroke="#440000" stroke-width="4"/>
+      <path d="M40,0 C50,-10 70,-10 75,0 C70,10 50,10 40,0 Z" fill="#0a0000"/>
+    </g>
+  </g>
+
+  <!-- ITACHI SPIRAL PATTERN (3 curved lines connecting tomoe) -->
+  <g stroke="#8b0000" stroke-width="6" fill="none" opacity="0.7">
+    <!-- Spiral arm 1 -->
+    <path d="M512,232 Q512,350 512,332"/>
+    <!-- Spiral arm 2 -->
+    <path d="M512,232 Q650,400 680,420"/>
+    <!-- Spiral arm 3 -->
+    <path d="M512,232 Q374,400 344,420"/>
+  </g>
+
+  <!-- Center spiral detail (Itachi signature) -->
+  <g transform="translate(512, 512)" stroke="#00ff88" stroke-width="3" fill="none" opacity="0.6">
+    <path d="M0,-40 A40,40 0 0,1 40,0 A40,40 0 0,1 0,40 A40,40 0 0,1 -40,0 A40,40 0 0,1 0,-40"/>
+    <path d="M0,-30 A30,30 0 0,1 30,0 A30,30 0 0,1 0,30 A30,30 0 0,1 -30,0 A30,30 0 0,1 0,-30"/>
+    <path d="M0,-20 A20,20 0 0,1 20,0 A20,20 0 0,1 0,20 A20,20 0 0,1 -20,0 A20,20 0 0,1 0,-20"/>
+  </g>
+
+  <!-- Center dot (pupil center) -->
+  <circle cx="512" cy="512" r="12" fill="#00ff88" opacity="0.9"/>
+  <circle cx="512" cy="512" r="6" fill="#8b0000"/>
+</svg>

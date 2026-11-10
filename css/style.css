@@ -41,7 +41,7 @@ body::before {
   z-index: 1; pointer-events: none;
 }
 
-/* ===== MANGEKYOU SHISUI - TOP (LARGER) ===== */
+/* ===== MANGEKYOU ITACHI - TOP (LARGER) ===== */
 .eye-top {
   position: fixed; top: 3%; left: 50%; transform: translateX(-50%);
   width: 220px; height: 220px;
@@ -78,7 +78,7 @@ body::before {
   text-shadow: 0 0 10px var(--green); opacity: 0.85;
 }
 
-/* ===== MANGEKYOU SHISUI - BOTTOM (REPLACES UCHIWA) ===== */
+/* ===== MANGEKYOU ITACHI - BOTTOM (REPLACES UCHIWA) ===== */
 .eye-bottom {
   position: fixed; bottom: 3%; left: 50%; transform: translateX(-50%) rotate(180deg);
   width: 180px; height: 180px;
