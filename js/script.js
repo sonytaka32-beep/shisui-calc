@@ -1,8 +1,9 @@
-/* Kalkulator Shisui Uchiha — logika lengkap & fix */
+/* Kalkulator Shisui Uchiha — full expression display, zero lag */
 const display = document.getElementById('display');
 let current = '0';
 let previous = null;
 let op = null;
+let expression = '';  // full expression string
 
 function format(num) {
   const n = Number(num);
@@ -10,24 +11,49 @@ function format(num) {
   return n.toString().length > 12 ? n.toExponential(4) : n.toString();
 }
 
-function render() { display.textContent = format(current); }
+function render() {
+  // Show full expression if exists, else current number
+  display.textContent = expression || format(current);
+}
 
-function clearAll() { current = '0'; previous = null; op = null; render(); }
+function clearAll() { current = '0'; previous = null; op = null; expression = ''; render(); }
 
 function deleteLast() {
-  if (current.length === 1 || current === '-0') current = '0';
-  else current = current.slice(0, -1) || '0';
+  if (expression) {
+    // If we have an expression, remove last char from current
+    if (current.length === 1 || current === '-0') current = '0';
+    else current = current.slice(0, -1) || '0';
+    // Rebuild expression
+    if (previous !== null && op) {
+      expression = format(previous) + ' ' + op + ' ' + current;
+    } else {
+      expression = current;
+    }
+  } else {
+    if (current.length === 1 || current === '-0') current = '0';
+    else current = current.slice(0, -1) || '0';
+  }
   render();
 }
 
 function toggleSign() {
   if (current === '0') return;
   current = current.startsWith('-') ? current.slice(1) : '-' + current;
+  if (previous !== null && op) {
+    expression = format(previous) + ' ' + op + ' ' + current;
+  } else {
+    expression = current;
+  }
   render();
 }
 
 function percent() {
   current = String(Number(current) / 100);
+  if (previous !== null && op) {
+    expression = format(previous) + ' ' + op + ' ' + current;
+  } else {
+    expression = current;
+  }
   render();
 }
 
@@ -56,21 +82,28 @@ function pressOperator(operator) {
     const res = compute(previous, val, op);
     if (!Number.isFinite(res)) { clearAll(); display.textContent = 'Error'; return; }
     previous = res;
-    display.textContent = format(res);
     current = String(res);
   }
   op = operator;
+  // Build expression: previous op current
+  expression = format(previous) + ' ' + operator + ' ' + current;
   current = '0';
+  render();
 }
 
 function pressEqual() {
   if (previous === null || !op) return;
   const res = compute(previous, Number(current), op);
   if (!Number.isFinite(res)) { display.textContent = 'Error'; clearAll(); return; }
+  // Show full expression with result briefly, then just result
+  expression = format(previous) + ' ' + op + ' ' + current + ' =';
+  display.textContent = expression + ' ' + format(res);
   current = String(res);
   previous = null;
   op = null;
-  render();
+  expression = '';
+  // After 1.5s, show just result
+  setTimeout(() => { if (!op && !previous) render(); }, 1500);
 }
 
 function pressKey(key) {
@@ -80,6 +113,12 @@ function pressKey(key) {
   } else {
     if (current === '0') current = key;
     else if (current.length < 12) current += key;
+  }
+  // Build expression if we have previous + op
+  if (previous !== null && op) {
+    expression = format(previous) + ' ' + op + ' ' + current;
+  } else {
+    expression = current;
   }
   render();
 }
@@ -98,7 +137,7 @@ document.querySelectorAll('.keys button').forEach(btn => {
   });
 });
 
-// Dukungan papan ketik fisik
+// Keyboard support
 document.addEventListener('keydown', e => {
   const key = e.key;
   if ((key >= '0' && key <= '9') || key === '.') { pressKey(key); return; }
