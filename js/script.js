@@ -95,15 +95,15 @@ function pressEqual() {
   if (previous === null || !op) return;
   const res = compute(previous, Number(current), op);
   if (!Number.isFinite(res)) { display.textContent = 'Error'; clearAll(); return; }
-  // Show full expression with result briefly (0.1s), then just result
+  // Show full expression with result instantly, then just result
   expression = format(previous) + ' ' + op + ' ' + current + ' =';
   display.textContent = expression + ' ' + format(res);
   current = String(res);
   previous = null;
   op = null;
   expression = '';
-  // After 0.1s, show just result
-  setTimeout(() => { if (!op && !previous) render(); }, 100);
+  // Instant - next frame show just result
+  requestAnimationFrame(() => { if (!op && !previous) render(); });
 }
 
 function pressKey(key) {
