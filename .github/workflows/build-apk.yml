@@ -31,13 +31,13 @@ jobs:
           packages: platform-tools cmdline-tools;latest platforms;android-34 build-tools;34.0.0
 
       - name: Install Cordova
-        run: npm install -g cordova@12.0.0
+        run: npm install -g cordova@11.0.0
 
       - name: Build APK
         run: |
           cordova create app com.sonytaka32.shisuicalc "Shisui Calc"
           cd app
-          cordova platform add android@13.0.0
+          cordova platform add android@11.0.0
           cp -r ../index.html ../css ../js www/
           cp ../config.xml .
           cordova build android
