@@ -16,6 +16,5 @@
     <icon density="xhdpi" src="res/icon/android/icon-xhdpi.png" />
     <icon density="xxhdpi" src="res/icon/android/icon-xxhdpi.png" />
     <icon density="xxxhdpi" src="res/icon/android/icon-xxxhdpi.png" />
-    <icon density="512" src="res/icon/android/icon-512.png" />
   </platform>
 </widget>
