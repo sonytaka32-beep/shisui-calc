@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.sonytaka32.shisuicalc" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Shisui Calc</name>
+  <description>Kalkulator dengan tema Mangekyou Shisui Uchiha dan Susanoo Hijau.</description>
+  <author email="sonytaka32-beep@users.noreply.github.com" href="https://github.com/sonytaka32-beep">sonytaka32-beep</author>
+  <content src="index.html" />
+  <access origin="*" />
+  <allow-navigation href="*" />
+  <allow-intent href="*" />
+  <platform name="android">
+    <preference name="AndroidLaunchMode" value="singleTop" />
+    <preference name="Fullscreen" value="true" />
+    <preference name="AndroidExtraPackages" value="" />
+  </platform>
+</widget>

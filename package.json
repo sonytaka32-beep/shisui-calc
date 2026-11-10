@@ -1,0 +1,8 @@
+{
+  "name": "shisui-calc",
+  "displayName": "Shisui Calc",
+  "version": "1.0.0",
+  "description": "Kalkulator Android dengan tema Mangekyou Shisui Uchiha &amp; Susanoo Hijau (HTML/CSS/JS + Cordova)",
+  "main": "index.html",
+  "scripts": {}
+}

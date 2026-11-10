@@ -1,0 +1,36 @@
+name: Build APK — Shisui Calc
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repositori
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Cordova
+        run: npm install -g cordova@11.0.0
+
+      - name: Tambah platform Android
+        run: cordova platform add android@11.0.0
+
+      - name: Build APK (debug)
+        run: cordova build android
+
+      - name: Unggah APK sebagai artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: shisui-calc-debug-apk
+          path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
