@@ -12,14 +12,10 @@ jobs:
       - name: Checkout repositori
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 20 (via nvm)
-        run: |
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          nvm install 20
-          nvm use 20
-          node --version
-          npm --version
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -35,17 +31,10 @@ jobs:
           packages: platform-tools cmdline-tools;latest platforms;android-34 build-tools;34.0.0
 
       - name: Install Cordova
-        run: |
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          nvm use 20
-          npm install -g cordova@11.0.0
+        run: npm install -g cordova@11.0.0
 
       - name: Build APK
         run: |
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          nvm use 20
           cordova create app com.sonytaka32.shisuicalc "Shisui Calc"
           cd app
           cordova platform add android@11.0.0
