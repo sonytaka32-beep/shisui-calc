@@ -4,11 +4,12 @@ let current = '0';
 let previous = null;
 let op = null;
 let expression = '';  // full expression string
+let waitingForOperand = false;  // true after operator pressed
 
 function format(num) {
   const n = Number(num);
   if (!Number.isFinite(n)) return 'Error';
-  return n.toString().length > 12 ? n.toExponential(4) : n.toString();
+  return n.toString().length > 16 ? n.toExponential(6) : n.toString();
 }
 
 function render() {
@@ -16,11 +17,11 @@ function render() {
   display.textContent = expression || format(current);
 }
 
-function clearAll() { current = '0'; previous = null; op = null; expression = ''; render(); }
+function clearAll() { current = '0'; previous = null; op = null; expression = ''; waitingForOperand = false; render(); }
 
 function deleteLast() {
-  if (expression) {
-    // If we have an expression, remove last char from current
+  if (expression && !waitingForOperand) {
+    // If we have an expression and typing operand, remove last char from current
     if (current.length === 1 || current === '-0') current = '0';
     else current = current.slice(0, -1) || '0';
     // Rebuild expression
@@ -29,6 +30,11 @@ function deleteLast() {
     } else {
       expression = current;
     }
+  } else if (waitingForOperand && expression) {
+    // Delete operator
+    waitingForOperand = false;
+    op = null;
+    expression = format(previous);
   } else {
     if (current.length === 1 || current === '-0') current = '0';
     else current = current.slice(0, -1) || '0';
@@ -39,9 +45,9 @@ function deleteLast() {
 function toggleSign() {
   if (current === '0') return;
   current = current.startsWith('-') ? current.slice(1) : '-' + current;
-  if (previous !== null && op) {
+  if (previous !== null && op && !waitingForOperand) {
     expression = format(previous) + ' ' + op + ' ' + current;
-  } else {
+  } else if (!waitingForOperand) {
     expression = current;
   }
   render();
@@ -49,9 +55,9 @@ function toggleSign() {
 
 function percent() {
   current = String(Number(current) / 100);
-  if (previous !== null && op) {
+  if (previous !== null && op && !waitingForOperand) {
     expression = format(previous) + ' ' + op + ' ' + current;
-  } else {
+  } else if (!waitingForOperand) {
     expression = current;
   }
   render();
@@ -78,30 +84,35 @@ function pressOperator(operator) {
   const val = Number(current);
   if (previous === null) {
     previous = val;
-  } else if (op) {
+  } else if (op && !waitingForOperand) {
     const res = compute(previous, val, op);
     if (!Number.isFinite(res)) { clearAll(); display.textContent = 'Error'; return; }
     previous = res;
     current = String(res);
   }
   op = operator;
-  // Build expression: previous op current
-  expression = format(previous) + ' ' + operator + ' ' + current;
+  waitingForOperand = true;
+  // Show "5 ×" (not "5 × 0")
+  expression = format(previous) + ' ' + operator;
   current = '0';
   render();
 }
 
 function pressEqual() {
   if (previous === null || !op) return;
-  const res = compute(previous, Number(current), op);
+  // If waiting for operand, use previous as both operands (e.g., 5 × = → 25)
+  const secondOperand = waitingForOperand ? previous : Number(current);
+  const res = compute(previous, secondOperand, op);
   if (!Number.isFinite(res)) { display.textContent = 'Error'; clearAll(); return; }
-  // Show full expression with result instantly, then just result
-  expression = format(previous) + ' ' + op + ' ' + current + ' =';
+  // Show full expression with result instantly
+  const secondStr = waitingForOperand ? format(previous) : current;
+  expression = format(previous) + ' ' + op + ' ' + secondStr + ' =';
   display.textContent = expression + ' ' + format(res);
   current = String(res);
   previous = null;
   op = null;
   expression = '';
+  waitingForOperand = false;
   // Instant - next frame show just result
   requestAnimationFrame(() => { if (!op && !previous) render(); });
 }
@@ -111,9 +122,10 @@ function pressKey(key) {
     if (current.includes('.')) return;
     current += '.';
   } else {
-    if (current === '0') current = key;
-    else if (current.length < 12) current += key;
+    if (current === '0' || waitingForOperand) current = key;
+    else if (current.length < 16) current += key;
   }
+  waitingForOperand = false;
   // Build expression if we have previous + op
   if (previous !== null && op) {
     expression = format(previous) + ' ' + op + ' ' + current;
