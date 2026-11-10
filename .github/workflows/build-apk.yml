@@ -27,14 +27,24 @@ jobs:
       - name: Install Cordova
         run: npm install -g cordova@12.0.0
 
-      - name: Tambah platform Android
-        run: cordova platform add android@13.0.0
+      - name: Create Cordova project
+        run: |
+          cordova create app com.sonytaka32.shisuicalc "Shisui Calc"
+          cd app
+          cordova platform add android@13.0.0
+
+      - name: Copy project files to www
+        run: |
+          cp -r index.html css js ../app/www/
+          cp config.xml ../app/
 
       - name: Build APK (debug)
-        run: cordova build android
+        run: |
+          cd app
+          cordova build android
 
       - name: Unggah APK sebagai artifact
         uses: actions/upload-artifact@v4
         with:
           name: shisui-calc-debug-apk
-          path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
+          path: app/platforms/android/app/build/outputs/apk/debug/app-debug.apk
