@@ -1,4 +1,4 @@
-/* Kalkulator Shisui Uchiha — logika lengkap */
+/* Kalkulator Shisui Uchiha — logika lengkap & fix */
 const display = document.getElementById('display');
 let current = '0';
 let previous = null;
@@ -40,11 +40,11 @@ function mapOp(unicodeOp) {
 }
 
 function compute(a, b, operator) {
-  const op = mapOp(operator);
-  if (op === '+') return a + b;
-  if (op === '-') return a - b;
-  if (op === '*') return a * b;
-  if (op === '/') return b === 0 ? NaN : a / b;
+  const mappedOp = mapOp(operator);
+  if (mappedOp === '+') return a + b;
+  if (mappedOp === '-') return a - b;
+  if (mappedOp === '*') return a * b;
+  if (mappedOp === '/') return b === 0 ? NaN : a / b;
   return b;
 }
 
@@ -86,12 +86,12 @@ function pressKey(key) {
 
 document.querySelectorAll('.keys button').forEach(btn => {
   btn.addEventListener('click', () => {
-    if (btn.dataset.ac) clearAll();
-    else if (btn.dataset.del) deleteLast();
-    else if (btn.dataset.sign) toggleSign();
-    else if (btn.dataset.percent) percent();
-    else if (btn.dataset.eq) pressEqual();
-    else if (btn.dataset.op) pressOperator(btn.dataset.op);
+    if (btn.hasAttribute('data-ac')) clearAll();
+    else if (btn.hasAttribute('data-del')) deleteLast();
+    else if (btn.hasAttribute('data-sign')) toggleSign();
+    else if (btn.hasAttribute('data-percent')) percent();
+    else if (btn.hasAttribute('data-eq')) pressEqual();
+    else if (btn.hasAttribute('data-op')) pressOperator(btn.dataset.op);
     else pressKey(btn.textContent);
     btn.classList.add('pressed');
     setTimeout(() => btn.classList.remove('pressed'), 120);
