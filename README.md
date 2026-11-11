@@ -1,3 +1,4 @@
+<img width="720" height="1612" alt="1000278295" src="https://github.com/user-attachments/assets/ea233296-1d55-43b7-a513-8b53c979adee" />
 # Shisui Calc — Kalkulator Tema Mangekyou Shisui Uchiha
 
 APK kalkulator Android (HTML/CSS/JS + Apache Cordova) dengan nuasa klan Uchiha:
